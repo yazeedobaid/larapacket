@@ -1,0 +1,77 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: docker/app
+      dockerfile: Dockerfile
+    image: laravelapp/app:latest
+    command: ["--env=dev"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "${APP_URL}"]
+      interval: 30s
+      timeout: 2s
+      retries: 3
+      start_period: 30s
+    networks:
+      - appnet
+    env_file:
+      - .env
+    volumes:
+      - .:/var/www/html
+    ports:
+      - 80:80
+      - 443:443
+    working_dir: /var/www/html/
+    depends_on:
+      - mysql
+      - redis
+  node:
+    build:
+      context: docker/node
+      dockerfile: Dockerfile
+    image: laravelapp/node:latest
+    command: ["--env=dev"]
+    networks:
+      - appnet
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - .:/opt/
+    working_dir: /opt/
+  mysql:
+    image: mysql:5.7
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+    ports:
+      - ${DB_PORT}:3306
+    networks:
+      - appnet
+    volumes:
+      - app-data:/var/lib/mysql
+  redis:
+    image: redis:5.0.7
+    command: redis-server --appendonly yes
+    env_file:
+      - .env
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    networks:
+      - appnet
+    volumes:
+      - redis-data:/data
+
+networks:
+  appnet:
+    driver: bridge
+
+volumes:
+  app-data:
+    driver: local
+  redis-data:
+    driver: local

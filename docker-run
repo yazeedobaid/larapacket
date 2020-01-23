@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ $1 = "composer" ]; then
+    shift 1
+    docker-compose exec app composer "$@"
+
+elif [ $1 = "artisan" ]; then
+    shift 1
+    docker-compose exec app php artisan "$@"
+
+elif [ $1 = "redis" ]; then
+    shift 1
+    docker-compose exec redis redis-cli "$@"
+
+elif [ $1 = "mysql" ]; then
+    shift 1
+    docker-compose exec mysql mysql "$@"
+
+elif [ $1 = "npm" ]; then
+    shift 1
+    docker-compose exec node npm "$@"
+
+else
+    docker-compose exec app "$@"
+fi

@@ -1,0 +1,108 @@
+# A Laravel web application Docker swarm stack definition. The stack define three services
+# as follows:
+#
+# 1. The web service has the application code, PHP_FPM and Nginx. This service uses an image.
+#    The service is run in replica mode with 3 replicas by default. It exposes ports 80 and 443.
+#    The service expects that the image to have the application code with all of its composer
+#    and NPM if any dependencies installed and compiled. Usually this image need to be obtained
+#    from a Docker registry in which CI/CD tool has already build the image.
+#
+# 2. The mysql service hosts the database on a Mysql 5.7 image. The service runs in dnsrr mode.
+#    This service has no replicas, hence we have take advantage of the dns round-robin mode to
+#    remove the virtual IP network in front of this service which is created by the routing mesh
+#    for performance reasons. It exposes port 3306 and it will be deployed on a master mode.
+#
+# 3. The redis service is responsible on caching in application. It is deployed using the same
+#    parameters as the mysql service.
+#
+#
+# Apart from services, the stack uses named volumes for database and redis data. Moreover, a network
+# is created which has all the services joined on it.
+#
+# The services uses environment variables. Docker stack don't yet support loading .env file for compose
+# files. Hence, the variables need to be replaced with actual values or using this trick to process the
+# compose file first with Docker compose and give it to stack;
+#
+# docker stack deploy -c <(docker-compose -f <stack-file-name>.yml config) <stack-name>
+#
+# This method is not recommended since it may expose the credentials in .env file to terminal history.
+
+version: "3.7"
+
+services:
+  web:
+    image: laravelapp/app:latest
+    command: ["/usr/bin/supervisord"]
+    env_file:
+      - .env
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - app-net
+    deploy:
+      mode: replicated
+      replicas: 3
+      update_config:
+        parallelism: 1
+        failure_action: rollback
+        monitor: 10s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "${APP_URL}"]
+      interval: 1m30s
+      timeout: 2s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      - mysql
+      - redis
+  mysql:
+    image: mysql:5.7
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USERNAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+    ports:
+      - target: 3306
+        published: "${DB_PORT}"
+        protocol: tcp
+        mode: host
+    networks:
+      - app-net
+    deploy:
+      endpoint_mode: dnsrr
+      placement:
+        constraints:
+          - node.role == manager
+    volumes:
+      - db-data:/var/lib/mysql
+  redis:
+    image: redis:5.0.7
+    env_file:
+      - .env
+    ports:
+      - target: 6379
+        published: "${REDIS_PORT}"
+        protocol: tcp
+        mode: host
+    networks:
+      - app-net
+    deploy:
+      endpoint_mode: dnsrr
+      placement:
+        constraints:
+          - node.role == manager
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+
+networks:
+  app-net:
+    driver: overlay
+
+volumes:
+  db-data:
+  redis-data:

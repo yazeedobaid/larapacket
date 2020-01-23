@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [[ $# -eq 0 || $1 = "-e=prod" || $1 = "--env=prod" ]]; then
+    composer install --no-ansi --no-dev --no-interaction --no-progress --no-suggest --optimize-autoloader
+    /usr/bin/supervisord
+
+elif [[ $1 = "-e=dev" || $1 = "--env=dev" ]]; then
+    composer install --optimize-autoloader
+    /usr/bin/supervisord
+    
+else
+    exec "$@"
+fi
