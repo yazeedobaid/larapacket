@@ -10,7 +10,6 @@ before_script:
   - php artisan migrate
 
 before_install:
-  - mysql -e 'CREATE DATABASE laravel;'
   - docker-compose up -d
 
 script:
