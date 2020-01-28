@@ -7,7 +7,6 @@ before_install:
   - composer self-update
   - composer create-project --prefer-dist laravel/laravel laraship
   - cd laraship
-  - cp .env.example .env
   - php artisan key:generate
 
 script:
