@@ -13,5 +13,4 @@ before_install:
 script:
   - docker-compose up -d
   - sleep 2m
-  - docker ps
-  - docker ps -a --filter "status=running" -q -s | wc -l | xargs -I % test % -eq 4
+  - docker ps -a
