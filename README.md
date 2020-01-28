@@ -1,14 +1,20 @@
-<br />
-<br />
-<br />
-<h1 align="center">Laraship</h1>
+<h1 align="center">Larapacket</h1>
 
-Laraship is a drop in files for Laravel applications to start using Docker in development and production. These files provide
-the Docker files for the images used, compose files for development usage and production deployment via Docker swarm.
+<p align="center">
+<a href="https://travis-ci.com/yazeedobaid/larapacket"><img src="https://travis-ci.com/yazeedobaid/larapacket.svg?token=sVwp33t8dZDgnCp5zun6&branch=master" alt="Build Status">
+</a>
+<a href="https://img.shields.io/github/v/tag/yazeedobaid/larapacket?label=tag">
+<img alt="GitHub tag (latest by date)" src="https://img.shields.io/github/v/tag/yazeedobaid/larapacket?label=tag">
+</a>
+</p>
+
+<br />
+
+Larapacket is a drop in files for Laravel applications to start using Docker in development and production. These files include
+Docker files to build the necessary images, a compose file for development usage and a production deployment files via Docker swarm.
 
 
-The ```docker``` directory at the root of the project contains all Docker files and scripts
-to start using Docker with the application. The Docker setup depends on these official Docker images.
+The ```docker``` contains all Docker files and scripts to start using Docker with the application. The Docker setup depends on these official Docker images.
 * ubuntu:18.04
 * mysql:5.7
 * redis:5.0.7
@@ -19,7 +25,7 @@ contains Nginx, PHP-FPM and Supervisor. The node image is used for front-end dev
 under repository name **laravelapp**.
 
 ### Docker compose
-A ```docker-compose.yml``` file has been added to build and run containers from one command.
+A ```docker-compose.yml``` file has been added to build and run containers in development from one command.
 ```
 $ docker-compose up
 ```
@@ -47,7 +53,7 @@ translate the arguments given to it and execute them in the correct container. T
 >the logs will be redirected to terminal.
 
 ### Docker Swarm
-A compose file is included in the ```docker``` directory to be deploy application to a swarm cluster. The compose file define a stack for the application. The stack has a **web**, **mysql** and **redis** services. The web service uses an image that will contain the application code ready for production use. This service runs in replica mode with 3 replicas. The mysql and redis services run using DNSRR (DNS Round-Robin) entry point mode with single replica on a manager node. DNS Round-Robin mode is used since these services has single task, hence no need for virtual network in front of these two services. The compose file has environment variables, like credentials. That need to be replaced with application specific ones.
+A compose file is included in the ```docker``` directory to be used to deploy application to a Docker swarm cluster. The compose file define a stack for the application. The stack has a **web**, **mysql** and **redis** services. The web service uses an image that will contain the application code ready for production use. This service runs in replica mode with 3 replicas. The mysql and redis services run using DNSRR (DNS Round-Robin) entry point mode with single replica on a manager node. DNS Round-Robin mode is used since these services has single task, hence no need for virtual network in front of these two services. The compose file has environment variables, like credentials. That need to be replaced with application specific ones. Also, the compose file need to get the production ready images from Docker Hub or your private Docker registery. 
 
 To deploy to swarm. First initialize a swarm and join other nodes to the cluster. Then edit the stack compose file ```docker-stack.yml``` in ```docker``` directory and substitute the environment variables with your own ones. Then execute the following command on a manager node;
 ```

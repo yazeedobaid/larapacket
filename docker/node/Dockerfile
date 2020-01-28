@@ -1,4 +1,4 @@
-FROM node:13.2.0-alpine3.10
+FROM node:14.5.0-alpine3.12
 
 LABEL author="Yazeed Obaid"
 LABEL version=0.1.0
