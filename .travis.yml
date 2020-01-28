@@ -15,3 +15,4 @@ script:
   - docker-compose up -d
   - sleep 2m
   - docker ps -a
+  - docker ps -a --filter "status=running" -q -s | wc -l | xargs -I % test % -eq 4
