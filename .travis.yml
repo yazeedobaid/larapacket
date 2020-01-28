@@ -5,9 +5,9 @@ services:
 
 before_install:
   - composer self-update
-  - composer create-project --prefer-dist laravel/laravel laraship
-  - cd laraship
-  - php artisan key:generate
+  - composer create-project --prefer-dist laravel/laravel laraship-app
+  - cp -a laraship/. laraship-app/
+  - cd laraship-app
 
 script:
   - docker-compose up -d
