@@ -6,7 +6,7 @@ services:
 before_install:
   - composer self-update
   - composer create-project --prefer-dist laravel/laravel laraship-app
-  - cp -a laraship/. laraship-app/
+  - cp -a /yazeedobaid/laraship/. /yazeedobaid/laraship-app/
   - cd laraship-app
 
 script:
