@@ -6,7 +6,9 @@ services:
 before_install:
   - composer self-update
   - composer create-project --prefer-dist laravel/laravel laraship-app
-  - ls
+  - mv laraship-app/* ../
+  - rm -rf laraship-app
+  - ls -al
 
 script:
   - docker-compose up -d
