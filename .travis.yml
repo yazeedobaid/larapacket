@@ -8,6 +8,7 @@ before_install:
   - composer create-project --prefer-dist laravel/laravel laraship-app
   - cp -r laraship-app/. .
   - rm -rf laraship-app
+  - echo 'DB_ROOT_PASSWORD=root' >> .env
   - ls -al
 
 script:
