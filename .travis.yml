@@ -1,17 +1,16 @@
+language: php
+
 services:
   - docker
 
-before_script:
+before_install:
   - composer self-update
   - composer create-project --prefer-dist laravel/laravel laraship
   - cp .env.example .env
   - composer install --prefer-source --no-interaction
   - php artisan key:generate
   - php artisan migrate
-
-before_install:
-  - docker-compose up -d
-
 script:
+  - docker-compose up -d
   - docker ps
   - docker ps -a --filter "status=running" -q -s | wc -l | xargs -I % test % -eq 4
