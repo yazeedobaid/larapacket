@@ -18,7 +18,7 @@ The ```docker``` contains all Docker files and scripts to start using Docker wit
 * ubuntu:18.04
 * mysql:5.7
 * redis:5.0.7
-* node:13.2.0-alpine3.10
+* node:14.5.0-alpine3.12
 
 The compose file build two images; The **app** image and **node** image. The app image is the main image for the application which
 contains Nginx, PHP-FPM and Supervisor. The node image is used for front-end development. The two images are scoped
