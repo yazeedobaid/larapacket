@@ -14,11 +14,11 @@ Larapacket is a drop in files for Laravel applications to start using Docker in 
 Docker files to build the necessary images, a compose file for development usage and a production deployment files via Docker swarm.
 
 
-The ```docker``` contains all Docker files and scripts to start using Docker with the application. The Docker setup depends on these official Docker images.
-* ubuntu:18.04
+The ```docker``` directory contains all Docker files and scripts to start using Docker with a Laravel application. The Docker setup depends on these official Docker images.
+* ubuntu:18.04 which uses PHP v7.4 and composer v2
 * mysql:5.7
 * redis:5.0.7
-* node:14.5.0-alpine3.12
+* node:15.0.1-alpine3.12
 
 The compose file build two images; The **app** image and **node** image. The app image is the main image for the application which
 contains Nginx, PHP-FPM and Supervisor. The node image is used for front-end development. The two images are scoped

@@ -1,7 +1,7 @@
-FROM node:14.5.0-alpine3.12
+FROM node:15.0.1-alpine3.12
 
 LABEL author="Yazeed Obaid"
-LABEL version=0.1.0
+LABEL version=1.0.0
 LABEL description="Docker image for Javascript and assests of a PHP Laravel application"
 
 RUN set -x
