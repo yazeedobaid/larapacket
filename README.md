@@ -1,7 +1,7 @@
 <h1 align="center">Larapacket</h1>
-
 <p align="center">
-<a href="https://travis-ci.com/yazeedobaid/larapacket"><img src="https://travis-ci.com/yazeedobaid/larapacket.svg?token=sVwp33t8dZDgnCp5zun6&branch=master" alt="Build Status">
+<a href="https://github.com/yazeedobaid/larapacket/workflows/Larapacket/badge.svg">
+<img alt="Larapacket" src="https://github.com/yazeedobaid/larapacket/workflows/Larapacket/badge.svg">
 </a>
 <a href="https://img.shields.io/github/v/tag/yazeedobaid/larapacket?label=tag">
 <img alt="GitHub tag (latest by date)" src="https://img.shields.io/github/v/tag/yazeedobaid/larapacket?label=tag">
