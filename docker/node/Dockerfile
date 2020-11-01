@@ -6,13 +6,18 @@ LABEL description="Docker image for Javascript and assests of a PHP Laravel appl
 
 RUN set -x
 
+RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+
 # working directory is the project root
-WORKDIR /opt
+WORKDIR /home/node/app
 
 # copying the entrypoint script for the container.
 COPY docker-entrypoint /usr/bin/docker-entrypoint
 
 # make script executable
 RUN chmod +x /usr/bin/docker-entrypoint
+
+# set user to node user
+USER node
 
 ENTRYPOINT ["docker-entrypoint"]

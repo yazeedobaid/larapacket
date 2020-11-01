@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Larapacket
 
 # Controls when the action will run. Triggers the workflow on push or pull request
@@ -23,28 +21,28 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Update Composer
-        run: composer self-update
+        run: sudo composer self-update
         
       - name: Create Laravel Project Using Composer
-        run: composer create-project --prefer-dist laravel/laravel larapacket-app
-      
-      - name: Create Laravel Project Using Composer
-        run: composer create-project --prefer-dist laravel/laravel larapacket-app
+        run: sudo composer create-project --prefer-dist laravel/laravel larapacket-app
       
       - name: Copy content of Laravel App on Larapacket as a Drop-in Project
-        run: cp -r larapacket-app/. .
+        run: sudo cp -r larapacket-app/. .
+      
+      - name: Add Permissions to Laravel App Files 
+        run: sudo chmod 777 -R .
       
       - name: Remove Created Directory for Project
-        run: rm -rf larapacket-app
+        run: sudo rm -rf larapacket-app
       
       - name: Echo the Root user Password to .env file
-        run: echo 'DB_ROOT_PASSWORD=root' >> .env
-      
+        run: sudo echo 'DB_ROOT_PASSWORD=root' >> .env
+        
       - name: List contents of current directory
         run: ls -al
       
       - name: Run Docker Compose
-        run: docker-compose up -d
+        run: sudo docker-compose up -d
       
       - name: Sleep until compose finish its work
         run: sleep 5m
@@ -57,7 +55,7 @@ jobs:
       - name: List Containers for this Compose
         run: docker-compose ps -a
       
-      - name: Test we have 4 Running Containers
+      - name: Test we have 4 Running Containers 
         run: docker ps -a --filter "status=running" -q -s | wc -l | xargs -I % test % -eq 4
           
       
