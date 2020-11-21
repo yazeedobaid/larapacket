@@ -37,8 +37,8 @@ services:
     environment:
       - NODE_ENV=development
     volumes:
-      - .:/opt/
-    working_dir: /opt/
+      - .:/home/node/app
+    working_dir: /home/node/app
   mysql:
     image: mysql:5.7
     env_file:
