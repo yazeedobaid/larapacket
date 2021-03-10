@@ -5,6 +5,8 @@ LABEL version=1.0.0
 LABEL description="Docker image for Javascript and assests of a PHP Laravel application"
 
 RUN set -x
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
 
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
